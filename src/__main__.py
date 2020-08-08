@@ -9,6 +9,7 @@ from flask_jwt_extended import (
     get_jwt_identity, set_access_cookies,
     set_refresh_cookies, unset_jwt_cookies
 )
+from flask_cors import CORS
 
 from config.server import configuration as conf
 
@@ -28,6 +29,7 @@ list_routes = [
 ]
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 app.config['JWT_TOKEN_LOCATION'] = conf['jwt_location']
 app.config['JWT_SECRET_KEY'] = conf['jwt_secret']

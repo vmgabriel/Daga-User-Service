@@ -18,3 +18,4 @@ typing-inspect==0.6.0
 Werkzeug==1.0.1
 psycopg2==2.8.5
 Inject==4.2.0
+Flask-Cors==3.0.8
