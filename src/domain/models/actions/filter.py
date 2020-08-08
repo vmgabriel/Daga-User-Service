@@ -17,7 +17,8 @@ class Filter(ABC, Generic[T]):
             attributes: List[Attribute_Filter],
             joins: Any,
             limit: int,
-            offset: int
+            offset: int,
+            order: List[str]
     ) -> (List[T], str):
         pass
 
@@ -39,6 +40,14 @@ class Filter(ABC, Generic[T]):
 
     @abstractmethod
     def convert_joins(self, joins: Any) -> str:
+        pass
+
+    @abstractmethod
+    def convert_order(self, order: str):
+        pass
+
+    @abstractmethod
+    def convert_orders(self, orders: List[str]):
         pass
 
     @abstractmethod

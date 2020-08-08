@@ -36,7 +36,8 @@ class Filter_User(Filter[User]):
             attributes: List[Attribute_Filter],
             joins: Any,
             limit: int,
-            offset: int
+            offset: int,
+            orders: List[str]
     ) -> (List[User], str):
         query_filter = query_count = self.query
         query_filter += self.convert_attributes(attributes)
@@ -51,7 +52,10 @@ class Filter_User(Filter[User]):
         query_count += ' WHERE '
         query_filter += self.convert_filter(filters)
         query_count += self.convert_filter(filters)
+        query_filter += self.convert_orders(orders)
         query_filter += self.convert_limit_offset(limit, offset)
+
+        print('query_filter - ', query_filter)
 
         cursor = self.__database.get_cursor()
         cursor.execute(query_filter)
@@ -124,7 +128,14 @@ class Filter_User(Filter[User]):
 
 
     def convert_limit_offset(self, limit: int, offset: int) -> str:
-        return 'OFFSET {} LIMIT {}'.format(offset, limit)
+        return ' OFFSET {} LIMIT {}'.format(str(int(offset) * int(limit)), limit)
+
+
+    def convert_order(self, order: str):
+        return '{} DESC'.format(order[1:])  if order[0] == '-' else '{} ASC'.format(order)
+
+    def convert_orders(self, orders: List[str]):
+        return ' ORDER BY {}'.format(','.join(list(map(self.convert_order, orders)))) if len(orders) > 0 else '';
 
 
     def convert_attributes(self, attributes: List[Attribute_Filter], is_count: bool = False) -> str:

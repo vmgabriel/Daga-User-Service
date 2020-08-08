@@ -70,14 +70,16 @@ class Database_User(Database_Interface[User]):
             attributes: List[Attribute_Filter],
             joins: Any,
             limit: int,
-            offset: int
+            offset: int,
+            orders: List[str]
     ) -> (List[User], int):
         (data, query_count) = self.filter_user.execute(
             filters,
             attributes,
             joins,
             limit,
-            offset
+            offset,
+            orders
         )
         return (data, self.count(query_count))
 

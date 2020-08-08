@@ -82,13 +82,15 @@ class UserV0Http(HttpProtocol):
             data = request.get_json(force=True)
             limit = 10 if (request.args.get('limit') == None) else request.args.get('limit')
             offset = 0 if (request.args.get('offset') == None) else request.args.get('offset')
+            order = [] if (request.args.get('orders') == None) else request.args.get('orders').split(',')
 
             (data, count) = self.database_user.filter(
                 data['filters'],
                 data['attributes'],
                 data['joins'],
                 limit,
-                offset
+                offset,
+                order
             )
 
             return jsonify({
